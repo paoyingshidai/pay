@@ -112,6 +112,12 @@ public class PaymentUtil {
 		return sNewString.equals(hmac);
 	}
 
+	public static boolean verifyCallback(String hmac, String verifyJson, String keyValue) {
+		String sNewString = PaymentUtil.hmacSign(verifyJson, keyValue);
+		System.out.println("verify = " + sNewString);
+		return sNewString.equals(hmac);
+	}
+
 	/**
 	 * @param aValue
 	 * @param aKey
