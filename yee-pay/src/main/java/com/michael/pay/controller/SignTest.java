@@ -24,7 +24,7 @@ public class SignTest {
 
         System.out.println("params : " + param);
 
-        System.out.println("isEquals? -> " + PaymentUtil.verifyCallback(param, userJson, key));
+        System.out.println("isEquals? -> " + PaymentUtil.verifyCallback(param, userJson, "32121"));
 
     }
 

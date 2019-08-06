@@ -128,6 +128,7 @@ public class PaymentUtil {
 		byte k_opad[] = new byte[64];
 		byte keyb[];
 		byte value[];
+		// 转为 byte 数组
 		try {
 			keyb = aKey.getBytes(encodingCharset);
 			value = aValue.getBytes(encodingCharset);
@@ -136,9 +137,11 @@ public class PaymentUtil {
 			value = aValue.getBytes();
 		}
 
+		// 不足的用 val(54/92) 填充
 		Arrays.fill(k_ipad, keyb.length, 64, (byte) 54);
 		Arrays.fill(k_opad, keyb.length, 64, (byte) 92);
 		for (int i = 0; i < keyb.length; i++) {
+			// 异或
 			k_ipad[i] = (byte) (keyb[i] ^ 0x36);
 			k_opad[i] = (byte) (keyb[i] ^ 0x5c);
 		}
@@ -147,19 +150,25 @@ public class PaymentUtil {
 		try {
 			md = MessageDigest.getInstance("MD5");
 		} catch (NoSuchAlgorithmException e) {
-
 			return null;
 		}
 		md.update(k_ipad);
 		md.update(value);
 		byte dg[] = md.digest();
+
 		md.reset();
 		md.update(k_opad);
 		md.update(dg, 0, 16);
 		dg = md.digest();
+
 		return toHex(dg);
 	}
 
+	/**
+	 * 将 input 转为十六进制字符串
+	 * @param input
+	 * @return
+	 */
 	public static String toHex(byte input[]) {
 		if (input == null)
 			return null;
